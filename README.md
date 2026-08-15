@@ -77,7 +77,7 @@ markowitz-mpt-streamlit/
 ## Acknowledgments and References
 
 The implementation adapts the standard Markowitz Monte Carlo workflow widely
-used in open-source Python-finance tutorials. It is inspired in particular by
+used in open-source Python-finance tutorials. It is inspired by
 Yves Hilpisch's [Python for Finance code repository](https://github.com/yhilpisch/py4fi),
 which accompanies the O'Reilly book *Python for Finance*.
 
