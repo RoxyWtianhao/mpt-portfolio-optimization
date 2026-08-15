@@ -11,11 +11,34 @@ academic CV or GitHub portfolio.
 ## Features
 
 - Downloads two years of daily adjusted closing prices with `yfinance`.
+- Includes an offline demo mode with simulated prices for testing when Yahoo
+  Finance is unavailable.
 - Accepts user-entered ticker symbols (default: AAPL, MSFT, GOOGL, AMZN, JPM).
 - Simulates 5,000 long-only, fully invested portfolios with random NumPy
   weights.
 - Identifies the maximum-Sharpe and minimum-volatility portfolios.
 - Visualizes the simulated risk-return space with Matplotlib.
+
+## Project Showcase
+
+### Offline Demo Mode
+
+When Yahoo Finance is unavailable or rate-limits a network connection, select
+**Offline demo** before running the simulation. The application then creates a
+reproducible two-year set of simulated daily prices and runs the same return,
+covariance, portfolio-weight, and Sharpe Ratio calculations as the live-data
+workflow.
+
+![Offline demo efficient-frontier chart](assets/offline-demo.png)
+
+The chart shows 5,000 simulated portfolios: the horizontal axis is annualized
+volatility, the vertical axis is annualized return, and color represents the
+Sharpe Ratio. The red star marks the maximum-Sharpe portfolio; the blue star
+marks the minimum-variance portfolio.
+
+> **Note:** Offline demo prices are synthetic and exist only to demonstrate and
+> test the application. They must not be interpreted as historical prices,
+> forecasts, or investment advice.
 
 ## Mathematical Background
 
@@ -64,20 +87,26 @@ risk-free rate and selects the simulated portfolio with the highest ratio.
    standard Debug action; Streamlit itself should still be launched with the
    command above for the interactive web interface.
 
+If Yahoo Finance is unavailable or rate-limits your network, choose **Offline
+demo** on the page. It runs the same MPT calculation using simulated prices and
+is intended only to test the application, not to provide investment results.
+
 ## Project Structure
 
 ```text
 markowitz-mpt-streamlit/
-├── app.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+|-- app.py
+|-- assets/
+|   `-- offline-demo.png
+|-- requirements.txt
+|-- README.md
+`-- .gitignore
 ```
 
 ## Acknowledgments and References
 
 The implementation adapts the standard Markowitz Monte Carlo workflow widely
-used in open-source Python-finance tutorials. It is inspired by
+used in open-source Python-finance tutorials. It is inspired in particular by
 Yves Hilpisch's [Python for Finance code repository](https://github.com/yhilpisch/py4fi),
 which accompanies the O'Reilly book *Python for Finance*.
 

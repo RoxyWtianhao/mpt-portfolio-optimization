@@ -18,17 +18,35 @@ def main():
         "AAPL, MSFT, GOOGL, AMZN, JPM",
     )
     tickers = [ticker.strip().upper() for ticker in ticker_text.split(",")]
+    source = st.radio(
+        "Data source",
+        ["Yahoo Finance", "Offline demo"],
+        horizontal=True,
+    )
     if not st.button("Run simulation"):
         return
     if len(tickers) < 2:
         st.error("Please enter at least two ticker symbols.")
         return
-    prices = yf.download(
-        tickers, period="2y", auto_adjust=True, progress=False
-    )["Close"].dropna()
-    if prices.empty:
-        st.error("No price data was found. Please check the ticker symbols.")
-        return
+    if source == "Offline demo":
+        dates = pd.date_range(
+            end=pd.Timestamp.today(), periods=TRADING_DAYS * 2, freq="B"
+        )
+        generator = np.random.default_rng(42)
+        data = generator.normal(0.0004, 0.015, (len(dates), len(tickers)))
+        prices = pd.DataFrame(
+            100 * np.exp(np.cumsum(data, axis=0)),
+            index=dates,
+            columns=tickers,
+        )
+        st.info("Offline demo uses simulated prices, not real market data.")
+    else:
+        prices = yf.download(
+            tickers, period="2y", auto_adjust=True, progress=False
+        )["Close"].dropna()
+        if prices.empty:
+            st.error("Yahoo returned no data. Try Offline demo or check network.")
+            return
     daily_returns = prices.pct_change().dropna()
     annual_returns = daily_returns.mean() * TRADING_DAYS
     annual_covariance = daily_returns.cov() * TRADING_DAYS
